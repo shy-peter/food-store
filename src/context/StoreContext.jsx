@@ -1,15 +1,15 @@
 import React, { createContext, useEffect, useState } from "react";
-import { food_list } from "../assets/frontend_assets/assets"; // Ensure the path is correct.
+import { food_list } from "../assets/frontend_assets/assets";
 
 export const StoreContext = createContext(null);
 
 export const StoreContextProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState({}); // Use an object for better handling of item quantities.
+  const [cartItems, setCartItems] = useState({});
 
   const addToCart = (itemId) => {
     setCartItems((prevCart) => ({
-      ...prevCart,  
-      [itemId]: (prevCart[itemId] || 0) + 1, // Increment quantity or initialize to 1.
+      ...prevCart,
+      [itemId]: (prevCart[itemId] || 0) + 1, // Increment quantity or set it to 1 if it doesn't exist
     }));
   };
 
@@ -18,10 +18,10 @@ export const StoreContextProvider = ({ children }) => {
       const updatedCart = { ...prevCart };
 
       if (updatedCart[itemId] > 1) {
-        // Decrease the quantity if greater than 1.
+        // Decrease the quantity if greater than 1
         updatedCart[itemId] -= 1;
       } else {
-        // Remove the item completely if quantity is 1 or less.
+        // Remove the item completely if quantity is 1 or less
         delete updatedCart[itemId];
       }
 
@@ -29,24 +29,21 @@ export const StoreContextProvider = ({ children }) => {
     });
   };
 
-  const deleteFromCart = (itemId) => {
+  const deleteFromCart = (itemid) => {
     setCartItems((prevCart) => {
-      const updatedCart = { ...prevCart };
-      delete updatedCart[itemId]; // Delete the item from the cart.
-      return updatedCart;
+      const updatedCart = { ...prevCart }; // Create a shallow copy of the previous cart
+      delete updatedCart[itemid]; // Delete the item from the copied object
+      return updatedCart; // Return the updated object
     });
   };
 
-  // Getting the total cart amount.
-  const getTotalCartAmount = (cartItems, food_list,) => {
+  //getting total cart amount
+  const getTotalCartAmount = () => {
     let totalAmount = 0;
-    for (const itemId in cartItems) {
-      if (cartItems[itemId] > 0) {
-        const itemInfo = food_list.find((product) => product._id === itemId);
-
-        if (itemInfo) {
-          totalAmount += itemInfo.price * cartItems[itemId]; // Ensure itemInfo exists.
-        }
+    for (const item in cartItems) {
+      if (cartItems[item] > 0) {
+        let itemInfo = food_list.find((product) => product._id === item);
+        totalAmount += itemInfo.price * cartItems[item];
       }
     }
     return totalAmount;
@@ -58,9 +55,8 @@ export const StoreContextProvider = ({ children }) => {
     addToCart,
     removeFromCart,
     getTotalCartAmount,
-    deleteFromCart,
+    deleteFromCart
   };
-
   return (
     <StoreContext.Provider value={contextValue}>
       {children}
