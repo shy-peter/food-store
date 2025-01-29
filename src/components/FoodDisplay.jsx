@@ -12,14 +12,19 @@ const FoodDisplay = ({ category }) => {
         {food_list.map((item, index) => {
           if (category === "All" || category === item.category) {
             return (
-              <FoodItem
-                key={index}
-                _id={item._id}
-                name={item.name}
-                price={item.price}
-                image={item.image}
-                description={item.description}
-              />
+              <div
+                className="rounded-lg w-fit flex flex-col  gap-3 shadow-lg overflow-hidden p-3 fade-in-item-two opacity-0 "
+                style={{ animationDelay: `${index * 1.1}s` }} // Staggered animation
+              >
+                <FoodItem
+                  key={index}
+                  _id={item._id}
+                  name={item.name}
+                  price={item.price}
+                  image={item.image}
+                  description={item.description}
+                />
+              </div>
             );
           }
 

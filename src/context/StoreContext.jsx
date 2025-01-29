@@ -4,7 +4,19 @@ import { food_list } from "../assets/frontend_assets/assets";
 export const StoreContext = createContext(null);
 
 export const StoreContextProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState({});
+  // const [cartItems, setCartItems] = useState({});
+
+  // Load cart items from local storage or default to an empty object
+  const [cartItems, setCartItems] = useState(() => {
+    const savedCart = localStorage.getItem("cartItems");
+    return savedCart ? JSON.parse(savedCart) : {};
+  });
+
+  // Save cart items to local storage whenever cartItems change
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
+
 
   const addToCart = (itemId) => {
     setCartItems((prevCart) => ({
