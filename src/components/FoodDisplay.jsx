@@ -14,7 +14,7 @@ const FoodDisplay = ({ category }) => {
             return (
               <div
                 className="rounded-lg w-fit flex flex-col  gap-3 shadow-lg overflow-hidden p-3 fade-in-item-two opacity-0 "
-                style={{ animationDelay: `${index * 1.1}s` }} // Staggered animation
+                style={{ animationDelay: `${index * 0.01}s` }} // Staggered animation
               >
                 <FoodItem
                   key={index}
